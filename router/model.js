@@ -13,7 +13,7 @@ function get(){
 
 function findBy(filter){
     return db("users")
-        .select("id", "username", "password")
+        .select("username", "password")
         .where(filter)
 }
 

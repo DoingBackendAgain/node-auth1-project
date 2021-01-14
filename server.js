@@ -1,10 +1,10 @@
 const express = require("express")
 
-//const router =  require("")
+const router =  require("./router/router")
 
 const server = express()
 
 server.use(express.json());
-//server.use('/api/', )
+server.use('/api', router )
 
 module.exports = server;
