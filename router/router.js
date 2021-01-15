@@ -5,7 +5,7 @@ const {restrict} = require("./middleware")
 
 const router = express.Router()
 
-router.get("/users", (req, res, next) => {
+router.get("/users", restrict(), (req, res, next) => {
     try{
         model.get()
             .then((user)=> {
@@ -22,20 +22,19 @@ router.post("/register", async (req, res, next)=> {
     try{
         const {username, password} = req.body
         console.log("checking register username:", username, password)
-        const user = await model.findBy({username})
-        console.log("checking username again:", username, password)
-
-        // if(user){
-        //     return res.status(409).json({
-        //         message: "username already exisits"
-        //     })
-        // }
+        const user = await model.findBy({username}).first()
+       
+        if(user){
+            return res.status(409).json({
+                message: "username already exisits"
+            })
+        }
 
         const newUser = await model.add({
             username,
             password: await bcrypt.hash(password, 10)
         })
-
+        
         res.status(201).json(newUser)
 
     }
